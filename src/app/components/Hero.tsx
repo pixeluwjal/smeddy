@@ -1,34 +1,52 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ChevronIcon } from './Icons';
+
+// Custom ChevronIcon component created with inline SVG for self-contained code.
+const ChevronIcon = ({ className }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M5 12h14M12 5l7 7-7 7" />
+  </svg>
+);
 
 const Hero = () => {
-  const primaryColor = '#02588A';
-  const darkerShade = '#003A5C';
-  const lighterShade = '#036BA0';
+  // Define a professional color palette
+  const primaryColor = '#02588A'; // A professional blue
+  const darkerShade = '#003A5C'; // A dark blue for depth
+  const lighterShade = '#036BA0'; // A lighter blue for accents
   const gradient = `linear-gradient(135deg, ${lighterShade} 0%, ${primaryColor} 100%)`;
 
-  const [mousePosition, setMousePosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
+  // State to track mouse position for the parallax effect
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
 
+  // Set up event listener for mouse movement on component mount
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // Parallax effect styles for visual elements and text
   const parallaxStyle = {
     transform: `translate(${mousePosition.x * 0.015}px, ${mousePosition.y * 0.015}px)`
   };
-
   const textParallaxStyle = {
     transform: `translate(${mousePosition.x * -0.01}px, ${mousePosition.y * -0.01}px)`
   };
 
+  // Framer Motion variants for the animated gradient blobs
   const blobVariants = {
     initial: { scale: 0.8, x: '50%', y: '-50%' },
     hover: { scale: 1.05, x: '55%', y: '-45%' },
@@ -36,7 +54,7 @@ const Hero = () => {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center bg-gray-50 overflow-hidden py-12 sm:py-24 md:py-32">
-      {/* Animated gradient blob background */}
+      {/* Animated gradient blob background using Framer Motion */}
       <motion.div
         className="absolute w-[50vw] h-[50vw] sm:w-[75vw] sm:h-[75vw] lg:w-[100vw] lg:h-[100vw] rounded-full mix-blend-multiply filter blur-3xl opacity-30 transform -translate-x-1/2 -translate-y-1/2"
         style={{ background: `radial-gradient(circle, ${primaryColor}, ${darkerShade})` }}
@@ -52,6 +70,7 @@ const Hero = () => {
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 2 }}
       />
 
+      {/* Main content container with text and buttons */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <motion.div
           className="mb-8 sm:mb-12"
@@ -60,11 +79,13 @@ const Hero = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           style={textParallaxStyle}
         >
+          {/* Tagline - changed from IoT to IT Services */}
           <div className="inline-flex items-center px-3 py-1 sm:px-4 sm:py-2 rounded-full bg-white/60 backdrop-blur-md border border-gray-200/50 shadow-sm mb-4 sm:mb-6">
             <span className="w-2 h-2 rounded-full bg-[#02588A] mr-2 animate-pulse"></span>
-            <span className="text-xs sm:text-sm font-medium text-gray-800">Innovating IoT Experiences</span>
+            <span className="text-xs sm:text-sm font-medium text-gray-800">Comprehensive IT Solutions</span>
           </div>
 
+          {/* Main Headline - changed to a more general IT services focus */}
           <motion.h1
             className="font-poppins text-4xl sm:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight"
             initial={{ opacity: 0, y: 20 }}
@@ -72,49 +93,51 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
           >
             <span className="bg-clip-text text-transparent" style={{ backgroundImage: gradient }}>
-              Next-Gen
+              Innovating
             </span>{' '}
             <br className="sm:hidden" />
-            Proximity Solutions
+            the Future of Tech
           </motion.h1>
 
+          {/* Subtitle/Description - changed to highlight a broader range of services */}
           <motion.p
             className="mt-4 text-base sm:text-lg text-gray-600 max-w-3xl mx-auto px-2"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
           >
-            Revolutionizing engagement with AI-powered, context-aware IoT experiences that bridge physical and digital worlds.
+            Providing a full suite of IT services from Cloud and AI to App Development and Data Science to help your business thrive.
           </motion.p>
         </motion.div>
 
+        {/* Action Buttons - changed text and links */}
         <motion.div
           className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 mt-8 sm:mt-12"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
         >
-          <Link
-            href="#about"
+          <a
+            href="#services" // Changed from Link to a tag
             className="px-6 py-3 sm:px-8 sm:py-4 rounded-full text-white font-bold text-base sm:text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] relative overflow-hidden group"
             style={{ background: gradient }}
           >
             <span className="relative z-10 flex items-center justify-center">
-              Explore More <ChevronIcon className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+              Our Services <ChevronIcon className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </span>
             <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          </Link>
-          <Link
-            href="#contact"
+          </a>
+          <a
+            href="#contact" // Changed from Link to a tag
             className="px-6 py-3 sm:px-8 sm:py-4 rounded-full bg-white text-gray-800 font-bold text-base sm:text-lg border-2 border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.02] hover:border-[#02588A] group"
           >
             <span className="relative z-10 flex items-center justify-center">
-              Get Demo <ChevronIcon className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
+              Contact Us <ChevronIcon className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </span>
-          </Link>
+          </a>
         </motion.div>
 
-        {/* Dynamic, modern visual element with parallax */}
+        {/* Dynamic visual elements with parallax effect */}
         <motion.div
           className="absolute inset-0 flex items-center justify-center pointer-events-none"
           style={parallaxStyle}
