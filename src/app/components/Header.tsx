@@ -2,29 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-
-// --- Icon SVGs (Inline to avoid external dependencies) ---
-const MenuIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <line x1="3" y1="12" x2="21" y2="12"></line>
-    <line x1="3" y1="6" x2="21" y2="6"></line>
-    <line x1="3" y1="18" x2="21" y2="18"></line>
-  </svg>
-);
-
-const CloseIcon = (props: React.SVGProps<SVGSVGElement>) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <line x1="18" y1="6" x2="6" y2="18"></line>
-    <line x1="6" y1="6" x2="18" y2="18"></line>
-  </svg>
-);
+import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Header = () => {
+  // Enhanced Color Palette
   const primaryColor = '#025C90';
-  const gradient = `linear-gradient(135deg, ${primaryColor} 0%, #003A5D 100%)`;
+  const primaryLight = '#036BA0';
+  const primaryDark = '#003A5D';
+  const accentColor = '#FF9E1B';
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-  const [scrolled, setScrolled] = useState<boolean>(false);
+  const gradient = `linear-gradient(135deg, ${primaryColor} 0%, ${primaryDark} 100%)`;
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeHash, setActiveHash] = useState('');
 
   const navItems = [
     { href: '#home', label: 'Home' },
@@ -36,10 +27,23 @@ const Header = () => {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
+      const sections = navItems.map(item => document.querySelector(item.href));
+      const currentScrollY = window.scrollY;
+
+      // Logic to determine which section is currently in view
+      sections.forEach(section => {
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= 200 && rect.bottom >= 200) {
+            setActiveHash(`#${section.id}`);
+          }
+        }
+      });
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [navItems]);
 
   const mobileMenuVariants = {
     hidden: { opacity: 0, y: -20, scaleY: 0.95 },
@@ -48,7 +52,7 @@ const Header = () => {
   };
 
   return (
-    <header className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 shadow-md backdrop-blur-md' : 'bg-transparent'}`}>
+    <header className={`fixed w-full top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 shadow-lg backdrop-blur-md' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex justify-between items-center h-20">
           {/* Logo with shine effect */}
@@ -64,7 +68,7 @@ const Header = () => {
                 alt="Smarteddy Logo"
                 width={160}
                 height={50}
-                className="object-contain h-[50px] w-[160px]"
+                className={`object-contain h-[50px] w-[160px] ${scrolled ? 'drop-shadow-sm' : ''} transition-all duration-300`}
               />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
             </Link>
@@ -82,10 +86,22 @@ const Header = () => {
                 >
                   <Link
                     href={item.href}
-                    className="relative text-gray-800 hover:text-[#025C90] px-3 py-2 text-base font-medium transition-colors duration-300 group"
+                    onClick={() => setActiveHash(item.href)}
+                    className="relative text-gray-800 hover:text-gray-900 px-3 py-2 text-base font-medium transition-colors duration-300 group"
                   >
                     {item.label}
-                    <span className="absolute left-1/2 bottom-0 w-0 h-0.5 bg-[#025C90] transition-all duration-300 group-hover:w-full group-hover:left-0" />
+                    {/* Active Underline Effect */}
+                    <motion.span
+                      layoutId="underline"
+                      className="absolute bottom-0 h-1 rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{
+                        width: activeHash === item.href ? '100%' : '0%',
+                        left: activeHash === item.href ? '0%' : '50%',
+                      }}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                      style={{ background: scrolled ? primaryColor : primaryDark }}
+                    />
                   </Link>
                 </motion.li>
               ))}
@@ -95,7 +111,7 @@ const Header = () => {
                 transition={{ duration: 0.5, delay: 0.8 }}
               >
                 <Link
-                  href="#get-started"
+                  href="#contact"
                   className="px-6 py-2.5 rounded-full text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] relative overflow-hidden"
                   style={{ background: gradient }}
                 >
@@ -113,9 +129,9 @@ const Header = () => {
               className="p-2 rounded-lg bg-white/80 backdrop-blur-sm border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300"
             >
               {mobileMenuOpen ? (
-                <CloseIcon className="h-6 w-6 text-gray-800" />
+                <FaTimes className="h-6 w-6 text-gray-800" />
               ) : (
-                <MenuIcon className="h-6 w-6 text-gray-800" />
+                <FaBars className="h-6 w-6 text-gray-800" />
               )}
             </button>
           </div>

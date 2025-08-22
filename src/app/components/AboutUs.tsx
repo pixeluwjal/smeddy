@@ -2,46 +2,8 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { motion, useInView, useTransform, useScroll } from 'framer-motion';
 
-// Custom inline SVG icons for self-contained code.
-const LightbulbIcon = ({ className }) => (
-  <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M15 14c.2-.2.4-.4.6-.6.8-.8 1.8-1.5 3-1.8 1.2-.3 2.5-.2 3.3.6a.5.5 0 010 .7.5.5 0 01-.7 0c-.6-.6-1.5-.7-2.3-.5-1 .3-1.9.9-2.7 1.6l-.6.6zM9 13a4 4 0 01-4-4v-1.5c0-1.3.8-2.5 2-3a3.5 3.5 0 016.8 0c1.2.5 2 1.7 2 3V9a4 4 0 01-4 4z"></path>
-    <path d="M9 13v7c0 1.1.9 2 2 2h2c1.1 0 2-.9 2-2v-7"></path>
-  </svg>
-);
-
-const GridIcon = ({ className }) => (
-  <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-    <path d="M8 3v18"></path>
-    <path d="M16 3v18"></path>
-    <path d="M3 8h18"></path>
-    <path d="M3 16h18"></path>
-  </svg>
-);
-
-const GlobeIcon = ({ className }) => (
-  <svg className={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="12" cy="12" r="10"></circle>
-    <path d="M12 2a14.5 14.5 0 000 20"></path>
-    <path d="M2 12h20"></path>
-  </svg>
-);
-
-const ChevronIcon = ({ className }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="M5 12h14M12 5l7 7-7 7" />
-  </svg>
-);
+// Import the icons you need from react-icons/fa
+import { FaLightbulb, FaTh, FaGlobe, FaChevronRight } from 'react-icons/fa';
 
 const AboutUs = () => {
   // Color palette based on the Hero component for consistency
@@ -81,17 +43,18 @@ const AboutUs = () => {
   // Update the cards data to be about a general IT services company
   const cards = [
     {
-      icon: <LightbulbIcon className="w-8 h-8" />,
+      // Use the imported React-Icon component directly
+      icon: <FaLightbulb className="w-8 h-8" />,
       title: "Our Mission",
       content: "To empower businesses with transformative technology solutions that drive efficiency, innovation, and sustainable growth.",
     },
     {
-      icon: <GridIcon className="w-8 h-8" />,
+      icon: <FaTh className="w-8 h-8" />,
       title: "Our Plan",
       content: "We leverage agile methodologies and a deep understanding of modern technology stacks to deliver bespoke, scalable solutions tailored to our clients' unique needs.",
     },
     {
-      icon: <GlobeIcon className="w-8 h-8" />,
+      icon: <FaGlobe className="w-8 h-8" />,
       title: "Our Vision",
       content: "To be the leading partner for businesses seeking to navigate the digital landscape and achieve a competitive edge through intelligent technology integration.",
     }
@@ -213,7 +176,8 @@ const AboutUs = () => {
                 <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
                 <span className="relative">Explore Our Services</span>
                 <span className="ml-3 relative">
-                  <ChevronIcon className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  {/* Use the imported Chevron icon */}
+                  <FaChevronRight className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
                 </span>
               </a>
             </div>
