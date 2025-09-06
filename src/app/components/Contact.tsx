@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { FaUser, FaEnvelope, FaComment, FaPhoneAlt, FaMapMarkerAlt, FaPaperPlane } from 'react-icons/fa';
 
 const Contact = () => {
@@ -7,22 +8,46 @@ const Contact = () => {
   const primaryColor = '#02588A';
   const primaryLight = '#02588A';
   const primaryDark = '#02588A';
-  const accentGradient = `linear-gradient(135deg, ${primaryLight}, ${primaryColor})`;
+  const accentColor = '#02588A';
+  const accentGradient = `linear-gradient(135deg, ${accentColor} 0%, #02588A 100%)`;
+  const primaryGradient = `linear-gradient(135deg, ${primaryColor} 0%, ${primaryDark} 100%)`;
 
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // This is a placeholder for form submission logic.
-    // In a real application, you would handle the form data here.
-    console.log('Form submitted:', formData);
-    // You could show a success message or clear the form here.
-    setFormData({ name: '', email: '', message: '' });
+    setLoading(true);
+    setStatus('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus('Message sent successfully! We will get back to you shortly.');
+        setFormData({ name: '', email: '', message: '' });
+      } else {
+        const errorData = await response.json();
+        setStatus(`Failed to send message: ${errorData.message || response.statusText}`);
+      }
+    } catch (error) {
+      console.error('Submission error:', error);
+      setStatus('Failed to send message due to a network or server error. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -154,13 +179,20 @@ const Contact = () => {
                 {/* Submit Button */}
                 <button
                   type="submit"
+                  disabled={loading}
                   className="w-full px-5 py-3 md:px-6 md:py-4 rounded-xl md:rounded-2xl text-white font-semibold text-base md:text-lg shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
                   style={{ background: accentGradient }}
                 >
-                  Send Message
+                  {loading ? 'Sending...' : 'Send Message'}
                   <FaPaperPlane className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </button>
                 
+                {status && (
+                  <p className={`mt-4 text-center ${status.includes('successfully') ? 'text-green-600' : 'text-red-600'}`}>
+                    {status}
+                  </p>
+                )}
+
                 <div className="mt-8 md:mt-10 pt-6 md:pt-8 border-t border-gray-100">
                   <p className="text-center text-gray-500 text-sm md:text-base">We typically respond to inquiries within 24 hours during business days.</p>
                 </div>
