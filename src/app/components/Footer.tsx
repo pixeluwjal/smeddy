@@ -24,6 +24,9 @@ const Footer = () => {
             <Link href="#contact" className="text-sm hover:text-[#025C90] transition-colors duration-300">
               Contact
             </Link>
+            <Link href="/RemoteWorkPolicy" className="text-sm hover:text-[#025C90] transition-colors duration-300">
+            Remote Work Policy
+            </Link>
           </div>
         </div>
       </div>
