@@ -19,7 +19,9 @@ const Services = () => {
         'Cloud strategy and migration',
         'Infrastructure as a Service (IaaS)',
         'Platform as a Service (PaaS)',
-        'Cloud security and compliance'
+        'Cloud security and compliance',
+        'Software as a Service (SaaS)',
+        'Cloud Cost Optimization & Monitoring'
       ]
     },
     {

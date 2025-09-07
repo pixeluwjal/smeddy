@@ -15,16 +15,16 @@ const Footer = () => {
             </span>
           </div>
           <div className="flex space-x-6">
-            <Link href="#home" className="text-sm hover:text-[#025C90] transition-colors duration-300">
+            <Link href="/#home" className="text-sm hover:text-[#025C90] transition-colors duration-300">
               Home
             </Link>
-            <Link href="#about" className="text-sm hover:text-[#025C90] transition-colors duration-300">
+            <Link href="/#about" className="text-sm hover:text-[#025C90] transition-colors duration-300">
               About
             </Link>
-            <Link href="#contact" className="text-sm hover:text-[#025C90] transition-colors duration-300">
+            <Link href="/#contact" className="text-sm hover:text-[#025C90] transition-colors duration-300">
               Contact
             </Link>
-            <Link href="/RemoteWorkPolicy" className="text-sm hover:text-[#025C90] transition-colors duration-300">
+            <Link href="/remote-work-policy" className="text-sm hover:text-[#025C90] transition-colors duration-300">
             Remote Work Policy
             </Link>
           </div>

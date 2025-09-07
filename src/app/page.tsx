@@ -11,14 +11,12 @@ import Footer from './components/Footer';
 export default function App() {
   return (
     <div className="font-poppins antialiased text-gray-900">
-      <Header />
       <main>
         <Hero />
         <AboutUs />
         <Products />
         <Contact />
       </main>
-      <Footer />
     </div>
   );
 }

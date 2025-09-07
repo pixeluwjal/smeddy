@@ -5,12 +5,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaBars, FaTimes } from 'react-icons/fa';
 
 const Header = () => {
-  // Enhanced Color Palette
   const primaryColor = '#025C90';
   const primaryLight = '#036BA0';
   const primaryDark = '#003A5D';
   const accentColor = '#FF9E1B';
-
   const gradient = `linear-gradient(135deg, ${primaryColor} 0%, ${primaryDark} 100%)`;
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -18,27 +16,47 @@ const Header = () => {
   const [activeHash, setActiveHash] = useState('');
 
   const navItems = [
-    { href: '#home', label: 'Home' },
-    { href: '#about', label: 'About' },
-    { href: '#services', label: 'Services' },
-    { href: '#contact', label: 'Contact' },
+    { href: '/#home', label: 'Home' },
+    { href: '/#about', label: 'About' },
+    { href: '/#services', label: 'Services' },
+    { href: '/careers', label: 'Careers' },
+    { href: '/#contact', label: 'Contact' },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
-      const sections = navItems.map(item => document.querySelector(item.href));
-      const currentScrollY = window.scrollY;
+      const currentHash = window.location.hash;
+      const currentPath = window.location.pathname;
 
-      // Logic to determine which section is currently in view
-      sections.forEach(section => {
-        if (section) {
-          const rect = section.getBoundingClientRect();
-          if (rect.top <= 200 && rect.bottom >= 200) {
-            setActiveHash(`#${section.id}`);
+      // Only check for active hash on the root page ('/')
+      if (currentPath === '/') {
+        let activeSectionFound = false;
+        // Loop through sections to find which one is in view
+        navItems.forEach(item => {
+          const sectionId = item.href.substring(2); // Get the ID, e.g., 'home' from '/#home'
+          const section = document.getElementById(sectionId);
+          if (section) {
+            const rect = section.getBoundingClientRect();
+            // Check if the section is in the viewport (with a buffer)
+            if (rect.top <= 200 && rect.bottom >= 200) {
+              setActiveHash(item.href); // Set the full href to state
+              activeSectionFound = true;
+            }
           }
+        });
+
+        // If no section is in view, but the URL has a hash, set it
+        if (!activeSectionFound && currentHash) {
+          setActiveHash(currentPath + currentHash);
+        } else if (!activeSectionFound && window.scrollY < 200) {
+          // If at the top of the page, but no sections are in view, clear active state
+          setActiveHash('');
         }
-      });
+      } else {
+        // If not on the homepage, no active section should be highlighted
+        setActiveHash('');
+      }
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -111,7 +129,7 @@ const Header = () => {
                 transition={{ duration: 0.5, delay: 0.8 }}
               >
                 <Link
-                  href="#contact"
+                  href="/#contact"
                   className="px-6 py-2.5 rounded-full text-white font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.03] relative overflow-hidden"
                   style={{ background: gradient }}
                 >
@@ -160,7 +178,7 @@ const Header = () => {
                 </Link>
               ))}
               <Link
-                href="#get-started"
+                href="/#contact"
                 className="block mt-6 text-center px-6 py-3 rounded-xl text-white font-bold text-lg shadow-lg transition-all duration-300 hover:scale-[1.02]"
                 style={{ background: gradient }}
                 onClick={() => setMobileMenuOpen(false)}
