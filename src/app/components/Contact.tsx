@@ -64,7 +64,7 @@ const Contact = () => {
               Get in Touch
             </span>
             <h3 className="font-sans text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mt-4 mb-4 md:mb-6">
-              Contact <span className="text-transparent bg-clip-text" style={{ backgroundImage: accentGradient }}>SmartEddy</span>
+              Contact <span className="text-transparent bg-clip-text" style={{ backgroundImage: accentGradient }}>Us</span>
             </h3>
             <p className="max-w-2xl mx-auto text-lg md:text-xl text-gray-600 px-4 md:px-0 leading-relaxed">
               Have questions or want to learn more about our proximity solutions? Get in touch with our team today.
