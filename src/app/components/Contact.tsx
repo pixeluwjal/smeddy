@@ -90,7 +90,7 @@ const Contact = () => {
                   {
                     icon: <FaPhoneAlt className="h-5 w-5 md:h-6 md:w-6" style={{ color: 'white' }} />,
                     title: 'Phone Number',
-                    lines: ['+91 8049572379']
+                    lines: ['+91 9740388599']
                   },
                   {
                     icon: <FaEnvelope className="h-5 w-5 md:h-6 md:w-6" style={{ color: 'white' }} />,

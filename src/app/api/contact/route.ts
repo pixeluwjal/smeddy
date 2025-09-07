@@ -20,16 +20,43 @@ export async function POST(req) {
 
   try {
     await transporter.sendMail({
-      from: `"Your Website Name" <${process.env.EMAIL_USER}>`, // Sender address
-      to: process.env.RECEIVER_EMAIL, // Your email address where you want to receive messages
-      subject: `New Contact Form Submission: ${name}`,
-      html: `
-        <h3>New Message from Contact Form</h3>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong> ${message}</p>
-      `,
-    });
+  from: `"SmartEddy Website" <${process.env.EMAIL_USER}>`, // Sender
+  to: process.env.RECEIVER_EMAIL, // Receiver
+  replyTo: email, // reply directly to user
+  subject: `📩 New Contact Form Submission from ${name}`,
+  html: `
+    <div style="font-family: Arial, sans-serif; background-color: #f4f6f9; padding: 20px;">
+      <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); padding: 20px;">
+        
+        <h2 style="color: #2b2d42; margin-bottom: 16px; text-align: center;">
+          📬 New Contact Form Submission
+        </h2>
+        
+        <table style="width: 100%; border-collapse: collapse; font-size: 15px;">
+          <tr>
+            <td style="padding: 8px; font-weight: bold; color: #333;">Name:</td>
+            <td style="padding: 8px; color: #555;">${name}</td>
+          </tr>
+          <tr style="background-color: #f9f9f9;">
+            <td style="padding: 8px; font-weight: bold; color: #333;">Email:</td>
+            <td style="padding: 8px; color: #555;">${email}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px; font-weight: bold; color: #333; vertical-align: top;">Message:</td>
+            <td style="padding: 8px; color: #555; white-space: pre-line;">${message}</td>
+          </tr>
+        </table>
+
+        <hr style="margin: 20px 0; border: none; border-top: 1px solid #eee;" />
+
+        <p style="font-size: 13px; color: #999; text-align: center;">
+          This message was sent from the <strong>SmartEddy Website</strong> contact form.
+        </p>
+      </div>
+    </div>
+  `,
+});
+
 
     return NextResponse.json({ message: 'Message sent successfully!' }, { status: 200 });
   } catch (error) {
